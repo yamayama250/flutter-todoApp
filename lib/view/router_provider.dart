@@ -17,8 +17,10 @@ final routerProvider = Provider(
         builder: (context, state) => const CreatePage(),
       ),
       GoRoute(
-        path: "/edit",
-        builder: (context, state) => const EditPage(),
+        path: "/edit/:id",
+        builder: (context, state) => EditPage(
+          id: int.parse(state.params["id"]!),
+        ),
       )
     ],
   ),

@@ -7,6 +7,7 @@ CMakeLists.txt linguist-vendored
 *.cmake linguist-vendored
 *.kt linguist-vendored
 *.html linguist-vendored
+Podfile linguist-vendored
 
 *.chopper.dart linguist-generated=true
 *.freezed.dart linguist-generated=true

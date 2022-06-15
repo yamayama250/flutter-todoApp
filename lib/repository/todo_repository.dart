@@ -2,16 +2,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:todo_app/model/database/database.dart';
 import 'package:todo_app/model/database/todo/todo.dart';
+import 'package:todo_app/model/todo/temp_todo.dart';
 
 final todoRepositoryProvider =
     Provider((ref) => TodoRepositoryImpl(ref.read(isarProvider)));
 
 abstract class TodoRepository {
   Future<List<Todo>> fetchAll();
-  Future<Todo> fetchTodo();
-  Future<void> createTodo();
-  Future<void> updateTodo();
-  Future<void> deleteTodo();
+  Future<void> createTodo(TempTodo todo);
+  Future<void> updateTodo(TempTodo todo, int id);
+  Future<void> deleteTodo(int id);
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -20,15 +20,20 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this._isar);
 
   @override
-  Future<void> createTodo() {
-    // TODO: implement createTodo
-    throw UnimplementedError();
+  Future<void> createTodo(TempTodo todo) async {
+    final newTodo = Todo()
+      ..title = todo.title
+      ..description = todo.description
+      ..deadline = todo.deadline
+      ..done = todo.done;
+    await _isar.writeTxn((isar) => _isar.todos.put(newTodo));
   }
 
   @override
-  Future<void> deleteTodo() {
-    // TODO: implement deleteTodo
-    throw UnimplementedError();
+  Future<void> deleteTodo(int id) async {
+    await _isar.writeTxn((isar) async {
+      await _isar.todos.delete(id);
+    });
   }
 
   @override
@@ -38,14 +43,13 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Todo> fetchTodo() {
-    // TODO: implement fetchTodo
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateTodo() {
-    // TODO: implement updateTodo
-    throw UnimplementedError();
+  Future<void> updateTodo(TempTodo todo, int id) async {
+    final newTodo = Todo()
+      ..id = id
+      ..title = todo.title
+      ..description = todo.description
+      ..deadline = todo.deadline
+      ..done = todo.done;
+    await _isar.writeTxn((isar) => _isar.todos.put(newTodo));
   }
 }

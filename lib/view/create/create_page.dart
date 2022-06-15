@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/controller/todo_controller.dart';
+import 'package:todo_app/model/todo/temp_todo.dart';
 import 'package:todo_app/view/router_provider.dart';
 
 class CreatePage extends ConsumerWidget {
@@ -7,7 +9,9 @@ class CreatePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(todoControllerProvider.notifier);
     final router = ref.read(routerProvider);
+    TempTodo tempTodo = TempTodo(deadline: DateTime.now());
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +28,7 @@ class CreatePage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: () => controller.createTodo(tempTodo),
               icon: const Icon(Icons.done),
             ),
           ),
@@ -41,10 +45,13 @@ class CreatePage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                tempTodo = tempTodo.copyWith(title: value);
+              },
             ),
             const SizedBox(
               height: 10,
@@ -56,11 +63,14 @@ class CreatePage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
               maxLines: 5,
+              onChanged: (value) {
+                tempTodo = tempTodo.copyWith(description: value);
+              },
             ),
             Align(
               alignment: Alignment.topRight,

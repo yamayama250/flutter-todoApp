@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/controller/todo_controller.dart';
 import 'package:todo_app/view/router_provider.dart';
 
 class ListPage extends ConsumerWidget {
@@ -8,6 +9,8 @@ class ListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
+    final controller = ref.read(todoControllerProvider.notifier);
+    final state = ref.watch(todoControllerProvider);
     const isChecked = false;
 
     return DefaultTabController(
@@ -28,16 +31,16 @@ class ListPage extends ConsumerWidget {
         body: TabBarView(
           children: [
             ListView.separated(
-              itemCount: 10,
+              itemCount: state.todoItems.length,
               separatorBuilder: (context, index) => const Divider(height: 0.5),
               itemBuilder: (context, index) => ListTile(
-                title: Text("これはタスクのタイトルです$index"),
+                title: Text(state.todoItems[index].title),
                 subtitle: Text("これはタスクの期限です$index"),
                 trailing: Checkbox(
                   value: isChecked,
                   onChanged: (value) {},
                 ),
-                onTap: () => router.push("/edit"),
+                onTap: () => router.push("/edit/$index"),
               ),
             ),
             ListView.separated(

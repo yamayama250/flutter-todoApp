@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/controller/todo_controller.dart';
+import 'package:todo_app/model/todo/temp_todo.dart';
 import 'package:todo_app/view/router_provider.dart';
 
 class EditPage extends ConsumerWidget {
-  const EditPage({Key? key}) : super(key: key);
+  final int id;
+
+  const EditPage({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
+    final controller = ref.read(todoControllerProvider.notifier);
+    final todo = ref.read(todoControllerProvider).todoItems[id];
+    TempTodo tempTodo = TempTodo(
+      title: todo.title,
+      description: todo.description,
+      deadline: todo.deadline,
+      done: todo.done,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -23,13 +35,13 @@ class EditPage extends ConsumerWidget {
         title: const Text("編集"),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () => controller.deleteTodo(todo.id),
             icon: const Icon(Icons.delete),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: () => controller.updateTodo(tempTodo, todo.id),
               icon: const Icon(Icons.done),
             ),
           ),
@@ -46,10 +58,14 @@ class EditPage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const TextField(
-              decoration: InputDecoration(
+            TextFormField(
+              initialValue: tempTodo.title,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                tempTodo = tempTodo.copyWith(title: value);
+              },
             ),
             const SizedBox(
               height: 10,
@@ -61,11 +77,15 @@ class EditPage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const TextField(
-              decoration: InputDecoration(
+            TextFormField(
+              initialValue: tempTodo.description,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
               maxLines: 5,
+              onChanged: (value) {
+                tempTodo = tempTodo.copyWith(description: value);
+              },
             ),
             Align(
               alignment: Alignment.topRight,
