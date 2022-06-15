@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/controller/todo_controller.dart';
 import 'package:todo_app/view/router_provider.dart';
 
@@ -11,6 +12,7 @@ class ListPage extends ConsumerWidget {
     final router = ref.read(routerProvider);
     final controller = ref.read(todoControllerProvider.notifier);
     final state = ref.watch(todoControllerProvider);
+    final dateFormat = DateFormat("yyyy年MM月dd日");
     const isChecked = false;
 
     return DefaultTabController(
@@ -35,7 +37,9 @@ class ListPage extends ConsumerWidget {
               separatorBuilder: (context, index) => const Divider(height: 0.5),
               itemBuilder: (context, index) => ListTile(
                 title: Text(state.todoItems[index].title),
-                subtitle: Text("これはタスクの期限です$index"),
+                subtitle: Text(
+                  "期限：${dateFormat.format(state.todoItems[index].deadline)}",
+                ),
                 trailing: Checkbox(
                   value: isChecked,
                   onChanged: (value) {},
