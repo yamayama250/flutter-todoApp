@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/controller/todo_controller.dart';
+import 'package:todo_app/view/component/date_picker_button.dart';
 import 'package:todo_app/view/router_provider.dart';
 
 class ListPage extends ConsumerWidget {
@@ -11,7 +12,7 @@ class ListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
     final controller = ref.read(todoControllerProvider.notifier);
-    final state = ref.watch(todoControllerProvider);
+    final todoState = ref.watch(todoControllerProvider);
     final dateFormat = DateFormat("yyyy年MM月dd日");
     const isChecked = false;
 
@@ -33,18 +34,23 @@ class ListPage extends ConsumerWidget {
         body: TabBarView(
           children: [
             ListView.separated(
-              itemCount: state.todoItems.length,
+              itemCount: todoState.todoItems.length,
               separatorBuilder: (context, index) => const Divider(height: 0.5),
               itemBuilder: (context, index) => ListTile(
-                title: Text(state.todoItems[index].title),
+                title: Text(todoState.todoItems[index].title),
                 subtitle: Text(
-                  "期限：${dateFormat.format(state.todoItems[index].deadline)}",
+                  "期限：${dateFormat.format(todoState.todoItems[index].deadline)}",
                 ),
                 trailing: Checkbox(
                   value: isChecked,
                   onChanged: (value) {},
                 ),
-                onTap: () => router.push("/edit/$index"),
+                onTap: () {
+                  ref
+                      .read(pickDateProvider.notifier)
+                      .update((state) => todoState.todoItems[index].deadline);
+                  router.push("/edit/$index");
+                },
               ),
             ),
             ListView.separated(
