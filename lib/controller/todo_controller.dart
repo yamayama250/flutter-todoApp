@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/model/database/todo/todo.dart';
 import 'package:todo_app/model/todo/temp_todo.dart';
 import 'package:todo_app/model/todo/todo_state.dart';
 import 'package:todo_app/repository/todo_repository.dart';
@@ -24,6 +25,10 @@ class TodoController extends StateNotifier<TodoState> {
     );
   }
 
+  Future<Todo> getTodo(int id) async {
+    return await _repository.fetchTodo(id);
+  }
+
   Future<void> createTodo(TempTodo todo) async {
     if (todo.title == "") return;
     await _repository.createTodo(todo);
@@ -36,6 +41,11 @@ class TodoController extends StateNotifier<TodoState> {
     await _repository.updateTodo(todo, id);
     await getTodos();
     _read(routerProvider).pop();
+  }
+
+  Future<void> checkedTodo(TempTodo todo, int id) async {
+    await _repository.updateTodo(todo, id);
+    await getTodos();
   }
 
   Future<void> deleteTodo(int id) async {

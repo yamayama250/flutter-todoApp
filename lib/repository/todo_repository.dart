@@ -9,6 +9,7 @@ final todoRepositoryProvider =
 
 abstract class TodoRepository {
   Future<List<Todo>> fetchAll();
+  Future<Todo> fetchTodo(int id);
   Future<void> createTodo(TempTodo todo);
   Future<void> updateTodo(TempTodo todo, int id);
   Future<void> deleteTodo(int id);
@@ -38,7 +39,12 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<List<Todo>> fetchAll() async {
-    final todos = await _isar.todos.where().findAll();
+    // sortが見当たらないので、怒られてるけどこの方法で並び替え
+    final todos = await _isar.todos
+        .filter()
+        .addSortByInternal("deadline", Sort.asc)
+        .buildInternal()
+        .findAll();
     return todos;
   }
 
@@ -51,5 +57,11 @@ class TodoRepositoryImpl implements TodoRepository {
       ..deadline = todo.deadline
       ..done = todo.done;
     await _isar.writeTxn((isar) => _isar.todos.put(newTodo));
+  }
+
+  @override
+  Future<Todo> fetchTodo(int id) async {
+    final todo = await _isar.todos.get(id);
+    return todo!;
   }
 }
