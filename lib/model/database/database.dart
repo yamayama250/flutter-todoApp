@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:todo_app/model/database/todo/todo.dart';
+import 'package:todo_app/features/todo/model/database/todo.dart';
 
 final isarProvider =
     Provider<Isar>((ref) => throw throw UnimplementedError(""));

@@ -1,36 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/controller/todo_controller.dart';
-import 'package:todo_app/model/database/todo/todo.dart';
-import 'package:todo_app/model/todo/temp_todo.dart';
-import 'package:todo_app/view/component/date_picker_button.dart';
-import 'package:todo_app/view/router_provider.dart';
+import 'package:todo_app/features/todo/controller/todo_controller.dart';
+import 'package:todo_app/features/todo/model/temp_todo.dart';
+import 'package:todo_app/widgets/date_picker_button.dart';
+import 'package:todo_app/routing/router_provider.dart';
 
 class ListPage extends ConsumerWidget {
   const ListPage({Key? key}) : super(key: key);
-
-  List<Todo> getDoneTodos(List<Todo> todos, bool bool) {
-    if (bool) {
-      return todos
-          .where((element) => element.done == bool)
-          .toList()
-          .reversed
-          .toList();
-    } else {
-      return todos.where((element) => element.done == bool).toList();
-    }
-  }
-
-  int getIndex(int id, List<Todo> todos) {
-    int index = -1;
-    todos.asMap().forEach((key, value) {
-      if (value.id == id) {
-        index = key;
-      }
-    });
-    return index;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,8 +15,8 @@ class ListPage extends ConsumerWidget {
     final controller = ref.read(todoControllerProvider.notifier);
     final pickDate = ref.read(pickDateProvider.notifier);
     final todoState = ref.watch(todoControllerProvider);
-    final doneTodos = getDoneTodos(todoState.todoItems, true);
-    final notDoneTodos = getDoneTodos(todoState.todoItems, false);
+    final doneTodos = controller.getDoneTodos(todoState.todoItems, true);
+    final notDoneTodos = controller.getDoneTodos(todoState.todoItems, false);
     final dateFormat = DateFormat("yyyy年MM月dd日");
 
     return DefaultTabController(
@@ -112,7 +89,7 @@ class ListPage extends ConsumerWidget {
                 onTap: () {
                   pickDate.update((state) => doneTodos[index].deadline);
                   router.push(
-                    "/edit/${getIndex(doneTodos[index].id, todoState.todoItems)}",
+                    "/edit/${controller.getIndex(doneTodos[index].id, todoState.todoItems)}",
                   );
                 },
               ),
@@ -141,7 +118,7 @@ class ListPage extends ConsumerWidget {
                 onTap: () {
                   pickDate.update((state) => notDoneTodos[index].deadline);
                   router.push(
-                    "/edit/${getIndex(notDoneTodos[index].id, todoState.todoItems)}",
+                    "/edit/${controller.getIndex(notDoneTodos[index].id, todoState.todoItems)}",
                   );
                 },
               ),

@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/controller/todo_controller.dart';
-import 'package:todo_app/model/todo/temp_todo.dart';
-import 'package:todo_app/view/component/date_picker_button.dart';
-import 'package:todo_app/view/router_provider.dart';
+import 'package:todo_app/features/todo/controller/todo_controller.dart';
+import 'package:todo_app/features/todo/model/temp_todo.dart';
+import 'package:todo_app/widgets/date_picker_button.dart';
+import 'package:todo_app/routing/router_provider.dart';
 
-class EditPage extends ConsumerWidget {
-  final int id;
-
-  const EditPage({Key? key, required this.id}) : super(key: key);
+class CreatePage extends ConsumerWidget {
+  const CreatePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
     final controller = ref.read(todoControllerProvider.notifier);
-    final todo = ref.read(todoControllerProvider).todoItems[id];
     final pickDate = ref.read(pickDateProvider.notifier);
-    TempTodo tempTodo = TempTodo(
-      title: todo.title,
-      description: todo.description,
-      deadline: todo.deadline,
-      done: todo.done,
-    );
+    TempTodo tempTodo = TempTodo(deadline: DateTime.now());
 
     return Scaffold(
       appBar: AppBar(
@@ -36,13 +28,8 @@ class EditPage extends ConsumerWidget {
             style: TextStyle(color: Colors.white),
           ),
         ),
-        centerTitle: true,
-        title: const Text("編集"),
+        title: const Text("追加"),
         actions: [
-          IconButton(
-            onPressed: () => controller.deleteTodo(todo.id),
-            icon: const Icon(Icons.delete),
-          ),
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
@@ -50,7 +37,8 @@ class EditPage extends ConsumerWidget {
                 tempTodo = tempTodo.copyWith(
                   deadline: ref.read(pickDateProvider),
                 );
-                controller.updateTodo(tempTodo, todo.id);
+                pickDate.update((state) => DateTime.now());
+                controller.createTodo(tempTodo);
               },
               icon: const Icon(Icons.done),
             ),
@@ -68,8 +56,7 @@ class EditPage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            TextFormField(
-              initialValue: tempTodo.title,
+            TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -87,8 +74,7 @@ class EditPage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            TextFormField(
-              initialValue: tempTodo.description,
+            TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),

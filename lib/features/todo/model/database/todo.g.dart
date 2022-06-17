@@ -56,25 +56,25 @@ void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
     Todo object, int staticSize, List<int> offsets, AdapterAlloc alloc) {
   var dynamicSize = 0;
   final value0 = object.deadline;
-  final _deadline = value0;
+  final deadline = value0;
   final value1 = object.description;
-  final _description = IsarBinaryWriter.utf8Encoder.convert(value1);
-  dynamicSize += (_description.length) as int;
+  final description = IsarBinaryWriter.utf8Encoder.convert(value1);
+  dynamicSize += (description.length) as int;
   final value2 = object.done;
-  final _done = value2;
+  final done = value2;
   final value3 = object.title;
-  final _title = IsarBinaryWriter.utf8Encoder.convert(value3);
-  dynamicSize += (_title.length) as int;
+  final title = IsarBinaryWriter.utf8Encoder.convert(value3);
+  dynamicSize += (title.length) as int;
   final size = staticSize + dynamicSize;
 
   rawObj.buffer = alloc(size);
   rawObj.buffer_length = size;
   final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
   final writer = IsarBinaryWriter(buffer, staticSize);
-  writer.writeDateTime(offsets[0], _deadline);
-  writer.writeBytes(offsets[1], _description);
-  writer.writeBool(offsets[2], _done);
-  writer.writeBytes(offsets[3], _title);
+  writer.writeDateTime(offsets[0], deadline);
+  writer.writeBytes(offsets[1], description);
+  writer.writeBool(offsets[2], done);
+  writer.writeBytes(offsets[3], title);
 }
 
 Todo _todoDeserializeNative(IsarCollection<Todo> collection, int id,

@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/view/create/create_page.dart';
-import 'package:todo_app/view/edit/edit_page.dart';
-import 'package:todo_app/view/list/list_page.dart';
+import 'package:todo_app/features/todo/presentation/create/create_page.dart';
+import 'package:todo_app/features/todo/presentation/edit/edit_page.dart';
+import 'package:todo_app/features/todo/presentation/list/list_page.dart';
 
 final routerProvider = Provider(
   (ref) => GoRouter(

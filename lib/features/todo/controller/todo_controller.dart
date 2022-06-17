@@ -1,9 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/model/database/todo/todo.dart';
-import 'package:todo_app/model/todo/temp_todo.dart';
-import 'package:todo_app/model/todo/todo_state.dart';
-import 'package:todo_app/repository/todo_repository.dart';
-import 'package:todo_app/view/router_provider.dart';
+import 'package:todo_app/features/todo/model/database/todo.dart';
+import 'package:todo_app/features/todo/model/temp_todo.dart';
+import 'package:todo_app/features/todo/model/todo_state.dart';
+import 'package:todo_app/features/todo/repository/todo_repository.dart';
+import 'package:todo_app/routing/router_provider.dart';
 
 final todoControllerProvider = StateNotifierProvider<TodoController, TodoState>(
     (ref) => TodoController(ref.read, ref.read(todoRepositoryProvider)));
@@ -52,5 +52,27 @@ class TodoController extends StateNotifier<TodoState> {
     await _repository.deleteTodo(id);
     await getTodos();
     _read(routerProvider).pop();
+  }
+
+  List<Todo> getDoneTodos(List<Todo> todos, bool bool) {
+    if (bool) {
+      return todos
+          .where((element) => element.done == bool)
+          .toList()
+          .reversed
+          .toList();
+    } else {
+      return todos.where((element) => element.done == bool).toList();
+    }
+  }
+
+  int getIndex(int id, List<Todo> todos) {
+    int index = -1;
+    todos.asMap().forEach((key, value) {
+      if (value.id == id) {
+        index = key;
+      }
+    });
+    return index;
   }
 }
