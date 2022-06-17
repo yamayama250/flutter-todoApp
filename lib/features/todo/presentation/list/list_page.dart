@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/features/todo/controller/todo_controller.dart';
 import 'package:todo_app/features/todo/model/temp_todo.dart';
 import 'package:todo_app/widgets/date_picker_button.dart';
-import 'package:todo_app/routing/router_provider.dart';
+import 'package:todo_app/routing/todo_router_provider.dart';
 
 class ListPage extends ConsumerWidget {
   const ListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.read(routerProvider);
+    final router = ref.read(todoRouterProvider);
     final controller = ref.read(todoControllerProvider.notifier);
     final pickDate = ref.read(pickDateProvider.notifier);
     final todoState = ref.watch(todoControllerProvider);

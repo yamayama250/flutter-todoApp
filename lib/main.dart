@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:todo_app/model/database/database.dart';
-import 'package:todo_app/routing/router_provider.dart';
+import 'package:todo_app/routing/todo_router_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.read(routerProvider);
+    final router = ref.read(todoRouterProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
