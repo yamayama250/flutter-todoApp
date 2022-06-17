@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/commom_widgets/date_picker_button.dart';
 import 'package:todo_app/features/todo/controller/todo_controller.dart';
 import 'package:todo_app/features/todo/model/temp_todo.dart';
-import 'package:todo_app/widgets/date_picker_button.dart';
+import 'package:todo_app/features/todo/presentation/edit/widgets/delete_dialog.dart';
 import 'package:todo_app/routing/todo_router_provider.dart';
 
 class EditPage extends ConsumerWidget {
@@ -40,7 +41,7 @@ class EditPage extends ConsumerWidget {
         title: const Text("編集"),
         actions: [
           IconButton(
-            onPressed: () => controller.deleteTodo(todo.id),
+            onPressed: () => showDeleteDialog(context, ref, todo.id),
             icon: const Icon(Icons.delete),
           ),
           Padding(

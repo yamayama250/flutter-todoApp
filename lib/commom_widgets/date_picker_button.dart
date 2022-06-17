@@ -12,6 +12,7 @@ Widget datePickerButton(DateTime deadline) {
       return TextButton(
         onPressed: () async {
           final DateTime? picked = await showDatePicker(
+            locale: const Locale("ja"),
             context: context,
             initialDate: deadline,
             firstDate: DateTime(2021),

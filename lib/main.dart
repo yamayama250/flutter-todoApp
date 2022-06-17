@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
-import 'package:todo_app/model/database/database.dart';
+import 'package:todo_app/database.dart';
 import 'package:todo_app/routing/todo_router_provider.dart';
 
 Future<void> main() async {
@@ -31,6 +32,14 @@ class MyApp extends ConsumerWidget {
       ),
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("en"),
+        Locale("ja"),
+      ],
     );
   }
 }
