@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/commom_widgets/date_picker_button.dart';
 import 'package:todo_app/features/todo/controller/todo_controller.dart';
 import 'package:todo_app/features/todo/model/temp_todo.dart';
+import 'package:todo_app/features/todo/presentation/list/widgets/deadline_text.dart';
 import 'package:todo_app/routing/todo_router_provider.dart';
 
 Widget listBody(WidgetRef ref, bool isloading) {
@@ -27,9 +28,7 @@ Widget listBody(WidgetRef ref, bool isloading) {
           separatorBuilder: (context, index) => const Divider(height: 0.5),
           itemBuilder: (context, index) => ListTile(
             title: Text(todoState.todoItems[index].title),
-            subtitle: Text(
-              "期限：${dateFormat.format(todoState.todoItems[index].deadline)}",
-            ),
+            subtitle: deadlineText(todoState.todoItems[index].deadline),
             trailing: Checkbox(
               value: todoState.todoItems[index].done,
               onChanged: (value) {
@@ -55,8 +54,7 @@ Widget listBody(WidgetRef ref, bool isloading) {
           separatorBuilder: (context, index) => const Divider(height: 0.5),
           itemBuilder: (context, index) => ListTile(
             title: Text(doneTodos[index].title),
-            subtitle:
-                Text("期限：${dateFormat.format(doneTodos[index].deadline)}"),
+            subtitle: deadlineText(todoState.todoItems[index].deadline),
             trailing: Checkbox(
               value: doneTodos[index].done,
               onChanged: (value) {
@@ -84,8 +82,7 @@ Widget listBody(WidgetRef ref, bool isloading) {
           separatorBuilder: (context, index) => const Divider(height: 0.5),
           itemBuilder: (context, index) => ListTile(
             title: Text(notDoneTodos[index].title),
-            subtitle:
-                Text("期限：${dateFormat.format(notDoneTodos[index].deadline)}"),
+            subtitle: deadlineText(todoState.todoItems[index].deadline),
             trailing: Checkbox(
               value: notDoneTodos[index].done,
               onChanged: (value) {
