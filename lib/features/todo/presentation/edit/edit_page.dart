@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/commom_widgets/date_picker_button.dart';
+import 'package:todo_app/commom_widgets/error_snack_bar.dart';
 import 'package:todo_app/features/todo/controller/todo_controller.dart';
 import 'package:todo_app/features/todo/model/temp_todo.dart';
 import 'package:todo_app/features/todo/presentation/edit/widgets/delete_dialog.dart';
@@ -48,6 +49,10 @@ class EditPage extends ConsumerWidget {
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               onPressed: () {
+                if (tempTodo.title == "") {
+                  errorSnackBar(context, "タイトルが入力されていません");
+                  return;
+                }
                 tempTodo = tempTodo.copyWith(
                   deadline: ref.read(pickDateProvider),
                 );

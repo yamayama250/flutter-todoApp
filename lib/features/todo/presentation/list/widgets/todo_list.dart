@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:todo_app/commom_widgets/date_picker_button.dart';
 import 'package:todo_app/features/todo/controller/todo_controller.dart';
 import 'package:todo_app/features/todo/model/temp_todo.dart';
@@ -14,7 +13,6 @@ Widget listBody(WidgetRef ref, bool isloading) {
   final todoState = ref.watch(todoControllerProvider);
   final doneTodos = controller.getDoneTodos(todoState.todoItems, true);
   final notDoneTodos = controller.getDoneTodos(todoState.todoItems, false);
-  final dateFormat = DateFormat("yyyy年MM月dd日");
 
   if (isloading) {
     return const Center(
@@ -54,7 +52,7 @@ Widget listBody(WidgetRef ref, bool isloading) {
           separatorBuilder: (context, index) => const Divider(height: 0.5),
           itemBuilder: (context, index) => ListTile(
             title: Text(doneTodos[index].title),
-            subtitle: deadlineText(todoState.todoItems[index].deadline),
+            subtitle: deadlineText(doneTodos[index].deadline),
             trailing: Checkbox(
               value: doneTodos[index].done,
               onChanged: (value) {
@@ -82,7 +80,7 @@ Widget listBody(WidgetRef ref, bool isloading) {
           separatorBuilder: (context, index) => const Divider(height: 0.5),
           itemBuilder: (context, index) => ListTile(
             title: Text(notDoneTodos[index].title),
-            subtitle: deadlineText(todoState.todoItems[index].deadline),
+            subtitle: deadlineText(notDoneTodos[index].deadline),
             trailing: Checkbox(
               value: notDoneTodos[index].done,
               onChanged: (value) {

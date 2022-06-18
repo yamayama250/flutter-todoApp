@@ -30,14 +30,12 @@ class TodoController extends StateNotifier<TodoState> {
   }
 
   Future<void> createTodo(TempTodo todo) async {
-    if (todo.title == "") return;
     await _repository.createTodo(todo);
     await getTodos();
     _read(todoRouterProvider).pop();
   }
 
   Future<void> updateTodo(TempTodo todo, int id) async {
-    if (todo.title == "") return;
     await _repository.updateTodo(todo, id);
     await getTodos();
     _read(todoRouterProvider).pop();
