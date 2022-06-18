@@ -34,6 +34,7 @@ class MyApp extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [
